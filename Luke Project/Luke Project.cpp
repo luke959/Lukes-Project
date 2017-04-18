@@ -1,11 +1,195 @@
-// Luke Project.cpp : Defines the entry point for the console application.
+/**
+*@author Luke Herron <b00641161> <herron-l1@email.ulster.ac.uk>
+*/
+
+// Luke.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
+#include <iostream>
+using namespace std;
 
-
-int main()
+class mec104
 {
-    return 0;
+private:
+	double	feedRate, MRR, depthOfCut, widthOfCut, diameter, spindleSpeed, UPF, SCS, MP, unitPowerFactor;
+	double	pi = 3.14159;
+	int		op, op2, op3, op4;
+	char tempchar;
+	char yn;
+public:
+
+	void equation_selection();
+	void mmr_equation_variant();
+	void scs_equation_variant();
+	void mp_equation_variant();
+	void calculate_mmr();
+	void calculate_scs();
+	void calculate_mp();
+
+};
+
+
+void mec104::equation_selection()
+{
+	do
+	{
+		cout << "Enter operator. 1 for MRR, 2 for SCS or 3 for MP: ";
+		cin >> op;
+
+		switch (op)
+		{
+		case 1:
+			mmr_equation_variant(); //get MMR varient
+			switch (op2)
+			{
+			case 1:
+				calculate_mmr();
+			case 2:
+				calculate_scs();
+			}
+			break;
+
+		case 2:
+			switch (op3)
+			{
+				scs_equation_variant();  //get SCS varient
+			case 1:
+
+				cout << "Enter diameter in mm: ";
+				cin >> diameter;
+
+				cout << "Enter spindle speed in RPM: ";
+				cin >> spindleSpeed;
+
+				cout << "Result is: " << pi * diameter * spindleSpeed << "(mm/min)" << endl;
+			case 2:
+				cout << "Enter SCS in mm/min: ";
+				cin >> SCS;
+
+				cout << "Enter diameter in mm: ";
+				cin >> diameter;
+
+				cout << "Result is: " << SCS / (diameter * spindleSpeed) << "(RPM)" << endl;
+				break;
+			}
+
+		case 3:
+			mp_equation_variant(); //get the mp equation varient
+			switch (op4)
+			{
+			case 1:
+				cout << "Enter unit power factor: ";
+				cin >> unitPowerFactor;
+
+				cout << "Enter material removal rate: ";
+				cin >> MRR;
+
+				cout << "Result is: " << unitPowerFactor * MRR << "Watts" << endl;
+			case 2:
+				cout << "Enter material removal rate: ";
+				cin >> MRR;
+
+				cout << "Enter milling power: ";
+				cin >> MP;
+
+				cout << "Result is: " << MP / MRR << endl;
+			case 3:
+				cout << "Enter unit power factor: ";
+				cin >> UPF;
+
+				cout << "Enter milling power: ";
+				cin >> MP;
+
+				cout << "Result is: " << MP / UPF << endl;
+				break;
+			}
+
+		default:
+			cout << "Error! operator is not correct" << endl;
+			break;
+		}
+		cout << "Run again? [Y/N]: " << flush;
+
+
+	} while (cin >> yn && (yn == 'Y' || yn == 'y'));
+
 }
+
+void mec104::mmr_equation_variant()
+{
+	cout << "You have selected MMR" << endl;
+	cout << "please select the equation variant" << endl;
+	cout << "1. MRR= Feed rate x depth x width" << endl;
+	cout << "2. Feed rate= MRR / (Depth x width)" << endl;
+	cin >> op2;
+}
+
+void mec104::scs_equation_variant()
+{
+	cout << "You have selected SCS" << endl;
+	cout << "please select the equation variant" << endl;
+	cout << "1.SCS= pi x diameter x spindle speed" << endl;
+	cout << "2.Spindle Speed= SCS / pi x diameter" << endl;
+}
+
+void mec104::mp_equation_variant()
+{
+	cout << "You have selected MP" << endl;
+	cout << "please select the equation variant" << endl;
+	cout << "1.MP= UPF x MRR" << endl;
+	cout << "2.UPF= MP / MRR" << endl;
+	cout << "3.MRR= MP / UPF" << endl;
+	cin >> op4;
+}
+
+void mec104::calculate_mmr()
+{
+	cout << "Enter feed rate in mm/rev: ";
+	cin >> feedRate;
+
+	cout << "Enter depth of cut in mm: ";
+	cin >> depthOfCut;
+
+	cout << "Enter width of cut in mm: ";
+	cin >> widthOfCut;
+
+	cout << "Result is: " << feedRate * depthOfCut * widthOfCut << "cc/min" << endl;
+}
+
+void mec104::calculate_scs()
+{
+	cout << "Enter MRR in cc/min: ";
+	cin >> MRR;
+
+	cout << "Enter depth of cut in mm: ";
+	cin >> depthOfCut;
+
+	cout << "Enter width of cut in mm: ";
+	cin >> widthOfCut;
+
+	cout << "Result is: " << MRR / (depthOfCut * widthOfCut) << "mm/rev" << endl;
+}
+
+void mec104::calculate_mp()
+{
+	cout << "Enter MRR in cc/min: ";
+	cin >> MRR;
+
+	cout << "Enter depth of cut in mm: ";
+	cin >> depthOfCut;
+
+	cout << "Enter width of cut in mm: ";
+	cin >> widthOfCut;
+
+	cout << "Result is: " << MRR / (depthOfCut * widthOfCut) << "mm/rev" << endl;
+}
+
+int main(void)
+{
+	mec104 m;
+	m.equation_selection();
+	return(0);
+}
+
 
