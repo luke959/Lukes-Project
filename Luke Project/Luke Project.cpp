@@ -14,7 +14,7 @@ class mec104
 private:
 	double	feedRate, MRR, depthOfCut, widthOfCut, diameter, spindleSpeed, UPF, SCS, MP, unitPowerFactor;
 	double	pi = 3.14159;
-	int		equationselection, mmr_varient, scs_varient, mp_varient;
+	int		equationselection, mrr_varient, scs_varient, mp_varient;
 	char tempchar;
 	char yn;
 public:
@@ -39,20 +39,22 @@ void mec104::equation_selection()
 		switch (equationselection)
 		{
 		case 1:
-			mrr_equation_variant(); //get MMR varient
-			switch (mmr_varient)
+			mrr_equation_variant(); //get MRR varient
+			switch (mrr_varient)
 			{
 			case 1:
 				calculate_mrr();
+				break;
 			case 2:
 				calculate_feedrate();
+				break;
 			}
 			break;
 
 		case 2:
+			scs_equation_variant();  //get SCS varient
 			switch (scs_varient)
 			{
-				scs_equation_variant();  //get SCS varient
 			case 1:
 
 				cout << "Enter diameter in mm: ";
@@ -62,6 +64,8 @@ void mec104::equation_selection()
 				cin >> spindleSpeed;
 
 				cout << "Result is: " << pi * diameter * spindleSpeed << "(mm/min)" << endl;
+				break;
+
 			case 2:
 				cout << "Enter SCS in mm/min: ";
 				cin >> SCS;
@@ -72,6 +76,7 @@ void mec104::equation_selection()
 				cout << "Result is: " << SCS / (diameter * spindleSpeed) << "(RPM)" << endl;
 				break;
 			}
+			break;
 
 		case 3:
 			mp_equation_variant(); //get the mp equation varient
@@ -85,6 +90,8 @@ void mec104::equation_selection()
 				cin >> MRR;
 
 				cout << "Result is: " << unitPowerFactor * MRR << "Watts" << endl;
+				break;
+
 			case 2:
 				cout << "Enter material removal rate: ";
 				cin >> MRR;
@@ -93,6 +100,8 @@ void mec104::equation_selection()
 				cin >> MP;
 
 				cout << "Result is: " << MP / MRR << endl;
+				break;
+
 			case 3:
 				cout << "Enter unit power factor: ";
 				cin >> UPF;
@@ -103,6 +112,7 @@ void mec104::equation_selection()
 				cout << "Result is: " << MP / UPF << endl;
 				break;
 			}
+			break;
 
 		default:
 			cout << "Error! operator is not correct" << endl;
@@ -117,11 +127,11 @@ void mec104::equation_selection()
 
 void mec104::mrr_equation_variant()
 {
-	cout << "You have selected MMR" << endl;
+	cout << "You have selected MRR" << endl;
 	cout << "please select the equation variant" << endl;
 	cout << "1. MRR= Feed rate x depth x width" << endl;
 	cout << "2. Feed rate= MRR / (Depth x width)" << endl;
-	cin >> mmr_varient;
+	cin >> mrr_varient;
 }
 
 void mec104::scs_equation_variant()
